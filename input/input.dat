@@ -1,0 +1,4 @@
+100		max_xi_nodes
+100		max_eta_nodes
+2		xi_distritbution_equal=0_cos=1_exp=2_invexp=3
+2		eta_distritbution_equal=0_cos=1_exp=2_invexp=3
