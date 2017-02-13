@@ -10,6 +10,7 @@ struct Parameters {
 	int max_eta_nodes;	//eta means y in computational domain
 	int xi_stretch_type;
 	int eta_stretch_type;
+	int grid_type;		//0 = O grid; 1 = C grid
 };
 
 struct Airfoil_Parameters {

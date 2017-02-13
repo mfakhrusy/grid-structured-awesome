@@ -1,4 +1,5 @@
 100		max_xi_nodes
 100		max_eta_nodes
-2		xi_distritbution_equal=0_cos=1_exp=2_invexp=3
-2		eta_distritbution_equal=0_cos=1_exp=2_invexp=3
+0		xi_distritbution_0=equal_1=cos_2=exponential_3=inverse_exponential
+0		eta_distritbution_0=equal_1=cos_2=exponential_3=inverse_exponential
+0		gridtype_0=O_grid_1=C_grid

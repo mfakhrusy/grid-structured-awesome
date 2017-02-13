@@ -2,10 +2,10 @@
 #define INITIALIZATION_HPP
 
 class Initialization {
+	void read_input(Parameters &pars);
+
 	public:
 		Initialization(Parameters &pars);
-	private:
-		void read_input(Parameters &pars);
 };
 
 

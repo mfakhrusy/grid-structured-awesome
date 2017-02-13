@@ -23,9 +23,9 @@ Airfoil::Airfoil(Parameters &pars, Airfoil_Parameters &airfoil_pars) {
 	//calculate eta
 	eta	=	airfoil_eta_calc(airfoil_pars, airfoil_nodes);
 
-	for (auto i = 0; i < x.size(); i++) {
-		std::cout << i << " " << x[i] << " " << y[i] << " " << s[i] << " " << eta[i] << std::endl;
-	}
+//	for (auto i = 0; i < x.size(); i++) {
+//		std::cout << i << " " << x[i] << " " << y[i] << " " << s[i] << " " << eta[i] << std::endl;
+//	}
 
 }
 

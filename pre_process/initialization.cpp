@@ -16,6 +16,7 @@ void Initialization::read_input(Parameters &pars) {
 	int &max_eta_nodes		=	pars.max_eta_nodes;
 	int &xi_stretch_type		=	pars.xi_stretch_type;	
 	int &eta_stretch_type		=	pars.eta_stretch_type;
+	int &grid_type			=	pars.grid_type;
 
 	std::ifstream read_file;
 	read_file.open("input/input.dat");
@@ -39,6 +40,9 @@ void Initialization::read_input(Parameters &pars) {
 					break;
 				case 4:
 					eta_stretch_type = number;
+					break;
+				case 5:
+					grid_type = number;
 					break;
 				default:
 					std::cout << "ok" << std::endl;
