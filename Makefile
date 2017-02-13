@@ -8,6 +8,7 @@
 DEST			= .
 
 HDRS			= global.hpp				\
+			  math_libs/spline.h			\
 			  math_libs/math_function.hpp		\
 			  pre_process/airfoil.hpp		\
 			  pre_process/initialization.hpp	\
