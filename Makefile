@@ -12,8 +12,9 @@ HDRS			= global.hpp				\
 			  math_libs/math_function.hpp		\
 			  pre_process/airfoil.hpp		\
 			  pre_process/initialization.hpp	\
-			  o_grid/o_grid_main.hpp		\
-			  c_grid/c_grid_main.hpp		\
+			  grid_generator/o_grid_main.hpp	\
+			  grid_generator/c_grid_main.hpp	\
+			  grid_generator/grid_process.hpp	\
 
 LIBS			=	
 
@@ -32,8 +33,9 @@ SRCS			= main.cpp					\
 			  math_libs/math_function.cpp			\
 			  pre_process/airfoil.cpp			\
 			  pre_process/initialization.cpp		\
-			  o_grid/o_grid_main.cpp			\
-			  c_grid/c_grid_main.cpp			\
+			  grid_generator/o_grid_main.cpp		\
+			  grid_generator/c_grid_main.cpp		\
+			  grid_generator/grid_process.cpp	\
 
 OBJS			= $(SRCS:.cpp=.o) 	
 

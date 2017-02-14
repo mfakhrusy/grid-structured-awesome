@@ -27,7 +27,7 @@ void O_Grid_Main::o_grid_initialization() {
 					o_grid_radius = number;
 					break;
 				default:
-					std::cout << "ok" << std::endl;
+					std::cout << "Wrong Input!!!" << std::endl;
 			}
 		}
 

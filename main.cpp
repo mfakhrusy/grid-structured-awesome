@@ -1,8 +1,8 @@
 #include "global.hpp"
 #include "pre_process/initialization.hpp"
 #include "pre_process/airfoil.hpp"
-#include "o_grid/o_grid_main.hpp"
-#include "c_grid/c_grid_main.hpp"
+#include "grid_generator/o_grid_main.hpp"
+#include "grid_generator/c_grid_main.hpp"
 
 int main() {
 	Parameters pars;
