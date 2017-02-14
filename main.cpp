@@ -9,7 +9,7 @@ int main() {
 	Airfoil_Parameters airfoil_pars;
 
 	Initialization init(pars);
-	Airfoil airfoil(pars, airfoil_pars);
+	Airfoil airfoil(airfoil_pars);
 
 	//calculate the grid depends on the input.
 	//grid_type = 0 -> O grid; grid_type = 1 -> C grid.

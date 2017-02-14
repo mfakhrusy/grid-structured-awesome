@@ -4,28 +4,41 @@
 #include "../global.hpp"
 #include "airfoil.hpp"
 
-//constructor
-Airfoil::Airfoil(Parameters &pars, Airfoil_Parameters &airfoil_pars) {
+//basic constructor
+Airfoil::Airfoil(Airfoil_Parameters &airfoil_pars) {
 
 	//make local variables
 	int &airfoil_nodes		=	airfoil_pars.airfoil_nodes;	//HAVE TO BE REFERENCE TO MAX_NODE BECAUSE AIRFOIL_READ IS INPUTING VALUE TO IT TNX
 	std::vector<double> &x		=	airfoil_pars.x;
 	std::vector<double> &y		=	airfoil_pars.y;
 	std::vector<double> &s		=	airfoil_pars.s;
-	std::vector<double> &eta	=	airfoil_pars.eta;
+	std::vector<double> &sigma	=	airfoil_pars.sigma;
 
 	//read the coordinate from databases
 	airfoil_read(x, y, airfoil_nodes);
 	
 	//calculate length
-	s	=	airfoil_element_length_calc(airfoil_pars, airfoil_nodes);
+	s	=	airfoil_element_length_calc(x, y, airfoil_nodes);
 
-	//calculate eta
-	eta	=	airfoil_eta_calc(airfoil_pars, airfoil_nodes);
+	//calculate sigma
+	sigma	=	airfoil_sigma_calc(s, airfoil_nodes);
 
-//	for (auto i = 0; i < x.size(); i++) {
-//		std::cout << i << " " << x[i] << " " << y[i] << " " << s[i] << " " << eta[i] << std::endl;
-//	}
+}
+
+//constructor for grid_generator directory (grid_process subroutine)
+Airfoil::Airfoil(Airfoil_Parameters &airfoil_pars, int airfoil_nodes) { //in this constructor, airfoil_pars already has values from spline interpolation process
+
+	//make local variables
+	std::vector<double> x		=	airfoil_pars.x;
+	std::vector<double> y		=	airfoil_pars.y;
+	std::vector<double> &s		=	airfoil_pars.s;
+	std::vector<double> &sigma	=	airfoil_pars.sigma;
+
+	//calculate length
+	s	=	airfoil_element_length_calc(x, y, airfoil_nodes);
+
+	//calculate sigma
+	sigma	=	airfoil_sigma_calc(s, airfoil_nodes);
 
 }
 
@@ -106,13 +119,11 @@ bool Airfoil::airfoil_check_from_databases(std::string airfoil_input) {
 	}
 }
 
-std::vector<double> Airfoil::airfoil_element_length_calc(Airfoil_Parameters airfoil_pars, int airfoil_nodes) {
+std::vector<double> Airfoil::airfoil_element_length_calc(std::vector<double> x, std::vector<double> y, int airfoil_nodes) {
 	
 	std::vector<double> length(airfoil_nodes - 1); //the index is -1 from node index
 
 	//make local variables
-	std::vector<double> x	=	airfoil_pars.x;
-	std::vector<double> y	=	airfoil_pars.y;
 
 	for (auto i = 0; i < airfoil_nodes - 1; i++) {
 
@@ -122,36 +133,27 @@ std::vector<double> Airfoil::airfoil_element_length_calc(Airfoil_Parameters airf
 	return length;
 }
 
-//function airfoil_eta_calc -> shape function calculations
-std::vector<double> Airfoil::airfoil_eta_calc(Airfoil_Parameters airfoil_pars, int airfoil_nodes) {
+//function airfoil_sigma_calc -> shape function calculations
+std::vector<double> Airfoil::airfoil_sigma_calc(std::vector<double> s, int airfoil_nodes) {
 
-	std::vector<double> eta(airfoil_nodes);
-
-	//make local variables
-	std::vector<double> s	=	airfoil_pars.s;
+	std::vector<double> sigma(airfoil_nodes);
 
 	//summation of the vector
 	double sum_s	=	std::accumulate(s.begin(), s.end(), 0.0);
 
-	//both edges //CHANGED (THIS IS CHANGED)
-	//eta[airfoil_nodes-1]	=	1;
-	//eta[0]		=	-1;
-	//
-	//INTO THIS ONE
-	eta[airfoil_nodes-1]	=	1;
-	eta[0]		=	eta[airfoil_nodes-1];
-	eta[1]		=	-1;
-
+	//both edges
+	sigma[airfoil_nodes-1]	=	1;
+	sigma[0]		=	sigma[airfoil_nodes-1];
+	sigma[1]		=	-1;
 
 	double temp;
 	
 	//for the rest of the nodes
-	//for (auto i = 1; i < airfoil_nodes - 1; i++) { // CHANGED FROM i = 1 to i = 2 because of the above reason
 	for (auto i = 2; i < airfoil_nodes - 1; i++) {
 		temp 	=	temp + s[i-1];
-		eta[i]	=	(2*temp/sum_s) - 1;
+		sigma[i]	=	(2*temp/sum_s) - 1;
 	}
 
-	return eta;
+	return sigma;
 }
 
