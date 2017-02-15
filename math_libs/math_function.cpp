@@ -9,3 +9,7 @@ double Math_Function::length_two_points(double x1, double x2, double y1, double 
 
 	return length;
 }
+
+double Math_Function::circle_return_y(double x, double radius, double x_center, double y_center) {
+	return sqrt(pow(radius,2) - pow((x - x_center), 2)) + y_center;
+}

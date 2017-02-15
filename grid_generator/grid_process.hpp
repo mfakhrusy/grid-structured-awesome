@@ -7,6 +7,8 @@ class Grid_Process {
 	std::vector<double> y;
 
 
+	protected:
+		double grid_stretching_equal(double i, double N);
 
 	public:
 		Airfoil_Parameters grid_airfoil_interpolation(int airfoil_nodes, int xi_stretch_type);

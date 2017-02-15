@@ -23,4 +23,17 @@ struct Airfoil_Parameters {
 	std::vector<double> sigma;	//parameterized s
 };
 
+struct Grid_Parameters {
+
+	std::vector<double> x_xi_outer_boundary;
+	std::vector<double> y_xi_outer_boundary;
+	std::vector<double> x_xi_inner_boundary;
+	std::vector<double> y_xi_inner_boundary;
+
+	std::vector<double> x_eta_upper_boundary;
+	std::vector<double> y_eta_upper_boundary;
+	std::vector<double> x_eta_lower_boundary;
+	std::vector<double> y_eta_lower_boundary;
+};
+
 #endif
