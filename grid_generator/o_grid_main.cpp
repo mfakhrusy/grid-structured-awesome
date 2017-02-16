@@ -13,13 +13,9 @@ O_Grid_Main::O_Grid_Main(Airfoil_Parameters airfoil_pars, Parameters pars): Grid
 
 	//main process for o-grid
 	o_grid_initialization();
-	Grid_Process grids(airfoil_pars, pars);
-	airfoil_pars_new = grids.grid_airfoil_interpolation(xi_nodes, xi_stretch_type);
+//	Grid_Process grids(airfoil_pars, pars);
+	airfoil_pars_new = grid_airfoil_interpolation(xi_nodes, xi_stretch_type);
 
-//	for (auto i = 0; i < airfoil_pars_new.x.size(); i++) {
-//		std::cout << i << " " << airfoil_pars_new.x[i] << " " << airfoil_pars_new.y[i] << std::endl;
-//	}
- 
 }
 
 void O_Grid_Main::o_grid_initialization() {
@@ -129,4 +125,30 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 	}
 
 	return grid_pars;
+}
+
+Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars) {
+	
+	//make local var
+	std::vector<std::vector<double>> &x	=	grid_pars.x;
+	std::vector<std::vector<double>> &y	=	grid_pars.y;
+
+	std::vector<double> &x_xi_outer_boundary	=	grid_pars.x_xi_outer_boundary;
+	std::vector<double> &y_xi_outer_boundary	=	grid_pars.y_xi_outer_boundary;
+	std::vector<double> &x_xi_inner_boundary	=	grid_pars.x_xi_inner_boundary;
+	std::vector<double> &y_xi_inner_boundary	=	grid_pars.y_xi_inner_boundary;
+
+	std::vector<double> &x_eta_upper_boundary	=	grid_pars.x_eta_upper_boundary;
+	std::vector<double> &y_eta_upper_boundary	=	grid_pars.y_eta_upper_boundary;
+	std::vector<double> &x_eta_lower_boundary	=	grid_pars.x_eta_lower_boundary;
+	std::vector<double> &y_eta_lower_boundary	=	grid_pars.y_eta_lower_boundary;
+
+	//make Grid_Computation_Parameters struct
+	Grid_Computation_Parameters grid_comp_pars;
+
+	Grid_Process::Grid_Algebra_Process grid_alg();
+
+
+	return grid_pars;
+
 }

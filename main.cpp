@@ -20,7 +20,8 @@ int main() {
 	if (pars.grid_type == 0) {
 
 		O_Grid_Main o_grid(airfoil_pars, pars);
-		grid_pars = o_grid.o_grid_boundary(pars);
+		grid_pars	=	o_grid.o_grid_boundary(pars);
+		grid_pars	=	o_grid.o_grid_internal(grid_pars);
 	
 	} else if (pars.grid_type == 1) {
 	

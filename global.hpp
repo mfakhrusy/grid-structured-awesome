@@ -34,6 +34,10 @@ struct Grid_Parameters {
 	std::vector<double> y_eta_upper_boundary;
 	std::vector<double> x_eta_lower_boundary;
 	std::vector<double> y_eta_lower_boundary;
+
+	std::vector<std::vector<double>> x;
+	std::vector<std::vector<double>> y;
+	
 };
 
 #endif
