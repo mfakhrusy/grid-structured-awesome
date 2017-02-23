@@ -22,6 +22,14 @@ int main() {
 		O_Grid_Main o_grid(airfoil_pars, pars);
 		grid_pars	=	o_grid.o_grid_boundary(pars);
 		grid_pars	=	o_grid.o_grid_internal(grid_pars, pars);
+
+	for (auto i = 0; i < pars.max_xi_nodes; i++) {
+		for (auto j = 0; j < pars.max_eta_nodes; j++) {
+			std::cout << i << " " << j << " "<< grid_pars.x[i][j] << " " << grid_pars.y[i][j] << std::endl;
+		}
+	}
+
+
 	
 	} else if (pars.grid_type == 1) {
 	

@@ -1,3 +1,4 @@
+#include <fstream>
 #include "../global.hpp"
 #include "grid_process.hpp"
 #include "../pre_process/airfoil.hpp"
@@ -130,6 +131,11 @@ Grid_Computation_Parameters Grid_Process::grid_algebra_boundary_calc(Parameters 
 	std::vector<double> &xi_upper	=	grid_comp_pars.xi_upper;
 	std::vector<double> &eta_left	=	grid_comp_pars.eta_left;
 	std::vector<double> &eta_right	=	grid_comp_pars.eta_right;
+
+	xi_lower.resize(max_xi_nodes);
+	xi_upper.resize(max_xi_nodes);
+	eta_left.resize(max_eta_nodes);
+	eta_right.resize(max_eta_nodes);
 	
 	for (auto i = 0; i < max_xi_nodes; i++) {
 
@@ -177,9 +183,18 @@ Grid_Computation_Parameters Grid_Process::grid_algebra_calc(Grid_Computation_Par
 	std::vector<double> xi_upper	=	grid_comp_pars.xi_upper;
 	std::vector<double> eta_left	=	grid_comp_pars.eta_left;
 	std::vector<double> eta_right	=	grid_comp_pars.eta_right;
-	std::vector<std::vector<double>> grid_correction_factor	=	grid_comp_pars.grid_correction_factor;
+	//std::vector<std::vector<double>> grid_correction_factor	=	grid_comp_pars.grid_correction_factor;
+	std::vector<std::vector<double>> grid_correction_factor	=	grid_algebra_correction(grid_comp_pars, max_xi_nodes, max_eta_nodes);
 	std::vector<std::vector<double>> &xi			=	grid_comp_pars.xi;
 	std::vector<std::vector<double>> &eta			=	grid_comp_pars.eta;
+	
+	//resize
+	xi.resize(max_xi_nodes);
+	eta.resize(max_xi_nodes);
+	for (auto i = 0; i < max_xi_nodes; i++) {
+		xi[i].resize(max_eta_nodes);
+		eta[i].resize(max_eta_nodes);
+	}
 	
 	for (auto i = 0; i < max_xi_nodes; i++) {
 		for (auto j = 0; j < max_eta_nodes; j++) {
@@ -208,18 +223,39 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 	std::vector<double> y_eta_upper	=	grid_pars.y_eta_upper_boundary;
 	std::vector<double> y_eta_lower	=	grid_pars.y_eta_lower_boundary;
 
+	//PRINT TO FILE TEMPORARY
+	
+	std::ofstream file;
+	file.open("output/x_y_boundaries");
+	for (auto i = 0; i < max_xi_nodes; i++) {
+		file	<< x_xi_outer[i] << " " << x_xi_inner[i] << " " << x_eta_upper[i] << " " << x_eta_lower[i] << " ";
+		file	<< y_xi_outer[i] << " " << y_xi_inner[i] << " " << y_eta_upper[i] << " " << y_eta_lower[i] << std::endl;
+	}
+	file.close();
+	//==============
+
 	std::vector<std::vector<double>> &x	=	grid_pars.x;
 	std::vector<std::vector<double>> &y	=	grid_pars.y;
+	
+	//resize
+	x.resize(max_xi_nodes);
+	y.resize(max_xi_nodes);
+	for (auto i = 0; i < max_xi_nodes; i++) {
+		x[i].resize(max_eta_nodes);
+		y[i].resize(max_eta_nodes);
+	}
+
 
 	//calculation for x
 	for (auto i = 0; i < max_xi_nodes; i++) {
 		for (auto j = 0; j < max_eta_nodes; j++) {
 			double temp_a	=	(1 - xi[i][j])*x_eta_lower[j] + xi[i][j]*x_eta_upper[j];
 			double temp_b	=	(1 - eta[i][j])*x_xi_inner[i] + eta[i][j]*x_xi_outer[i];
-			double corr_a	=	(1 - xi[i][j])*(1 - eta[i][j])*x_eta_lower[0] + (1 - xi[i][j])*eta[i][j]*x_eta_lower[max_eta_nodes];
-			double corr_b	=	xi[i][j]*(1 - eta[i][j])*x_eta_upper[0] + xi[i][j]*eta[i][j]*x_eta_upper[max_eta_nodes];
+			double corr_a	=	(1 - xi[i][j])*(1 - eta[i][j])*x_eta_lower[0] + (1 - xi[i][j])*eta[i][j]*x_eta_lower[max_eta_nodes-1];
+			double corr_b	=	xi[i][j]*(1 - eta[i][j])*x_eta_upper[0] + xi[i][j]*eta[i][j]*x_eta_upper[max_eta_nodes-1];
 			
 			x[i][j]		=	temp_a + temp_b - corr_a - corr_b;
+
 		}
 	}
 	
@@ -228,10 +264,14 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 		for (auto j = 0; j < max_eta_nodes; j++) {
 			double temp_a	=	(1 - xi[i][j])*y_eta_lower[j] + xi[i][j]*y_eta_upper[j];
 			double temp_b	=	(1 - eta[i][j])*y_xi_inner[i] + eta[i][j]*y_xi_outer[i];
-			double corr_a	=	(1 - xi[i][j])*(1 - eta[i][j])*y_eta_lower[0] + (1 - xi[i][j])*eta[i][j]*y_eta_lower[max_eta_nodes];
-			double corr_b	=	xi[i][j]*(1 - eta[i][j])*y_eta_upper[0] + xi[i][j]*eta[i][j]*y_eta_upper[max_eta_nodes];
+			double corr_a	=	(1 - xi[i][j])*(1 - eta[i][j])*y_eta_lower[0] + (1 - xi[i][j])*eta[i][j]*y_eta_lower[max_eta_nodes-1];
+			double corr_b	=	xi[i][j]*(1 - eta[i][j])*y_eta_upper[0] + xi[i][j]*eta[i][j]*y_eta_upper[max_eta_nodes-1];
 			
 			y[i][j]		=	temp_a + temp_b - corr_a - corr_b;
+
+//			if(j==10) {
+//				std::cout << i << " " << j << " " << x[i][j] << " " << y[i][j] << std::endl;
+//			}
 		}
 	}
 

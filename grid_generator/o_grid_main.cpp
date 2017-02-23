@@ -96,6 +96,8 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 			y_xi_outer_boundary[i]	=	o_grid_center_y;
 		}
 
+//		std::cout << x_xi_outer_boundary[i] << " " << y_xi_outer_boundary[i] << std::endl;
+//		std::cout << x_xi_inner_boundary[i] << " " << y_xi_inner_boundary[i] << std::endl;
 	}
 
 	//x and y eta lower and upper boundary
@@ -122,6 +124,9 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 		x_eta_lower_boundary[i]	=	x_eta_min + temp_x*(x_eta_max - x_eta_min);
 		y_eta_lower_boundary[i]	=	o_grid_center_y;
 
+//		std::cout << x_eta_upper_boundary[i] << " " << y_eta_upper_boundary[i] << std::endl;
+//		std::cout << x_eta_lower_boundary[i] << " " << y_eta_lower_boundary[i] << std::endl;
+
 	}
 
 	return grid_pars;
@@ -134,23 +139,12 @@ Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars, Paramete
 	std::vector<std::vector<double>> &y	=	grid_pars.y;
 	int max_xi_nodes	=	pars.max_xi_nodes;
 	int max_eta_nodes	=	pars.max_eta_nodes;
-
-	std::vector<double> &x_xi_outer_boundary	=	grid_pars.x_xi_outer_boundary;
-	std::vector<double> &y_xi_outer_boundary	=	grid_pars.y_xi_outer_boundary;
-	std::vector<double> &x_xi_inner_boundary	=	grid_pars.x_xi_inner_boundary;
-	std::vector<double> &y_xi_inner_boundary	=	grid_pars.y_xi_inner_boundary;
-
-	std::vector<double> &x_eta_upper_boundary	=	grid_pars.x_eta_upper_boundary;
-	std::vector<double> &y_eta_upper_boundary	=	grid_pars.y_eta_upper_boundary;
-	std::vector<double> &x_eta_lower_boundary	=	grid_pars.x_eta_lower_boundary;
-	std::vector<double> &y_eta_lower_boundary	=	grid_pars.y_eta_lower_boundary;
-
+	
 	//make Grid_Computation_Parameters struct
 	Grid_Computation_Parameters grid_comp_pars;
 	grid_comp_pars	=	grid_algebra_boundary_calc(pars);
 	grid_comp_pars	=	grid_algebra_calc(grid_comp_pars, max_xi_nodes, max_eta_nodes);
 	grid_pars	=	grid_algebra_real_calc(grid_pars, grid_comp_pars, max_xi_nodes, max_eta_nodes);
-
 	return grid_pars;
 
 }

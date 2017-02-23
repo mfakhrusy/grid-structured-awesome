@@ -1,5 +1,5 @@
-201		max_xi_nodes_ODD_PLEASE
-201		max_eta_nodes_ODD_PLEASE
+101		max_xi_nodes_ODD_PLEASE
+101		max_eta_nodes_ODD_PLEASE
 0		xi_distritbution_0=equal_1=cos_2=exponential_3=inverse_exponential
 0		eta_distritbution_0=equal_1=cos_2=exponential_3=inverse_exponential
 0		gridtype_0=O_grid_1=C_grid
