@@ -40,4 +40,18 @@ struct Grid_Parameters {
 	
 };
 
+struct Grid_Computation_Parameters {
+
+	std::vector<double> xi_upper;
+	std::vector<double> xi_lower;
+	std::vector<double> eta_left;
+	std::vector<double> eta_right;
+
+
+	std::vector<std::vector<double>> grid_correction_factor;
+	std::vector<std::vector<double>> xi;	//x computational domain
+	std::vector<std::vector<double>> eta;	//y computational domain
+
+};
+
 #endif

@@ -127,11 +127,13 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 	return grid_pars;
 }
 
-Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars) {
+Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars, Parameters pars) {
 	
 	//make local var
 	std::vector<std::vector<double>> &x	=	grid_pars.x;
 	std::vector<std::vector<double>> &y	=	grid_pars.y;
+	int max_xi_nodes	=	pars.max_xi_nodes;
+	int max_eta_nodes	=	pars.max_eta_nodes;
 
 	std::vector<double> &x_xi_outer_boundary	=	grid_pars.x_xi_outer_boundary;
 	std::vector<double> &y_xi_outer_boundary	=	grid_pars.y_xi_outer_boundary;
@@ -145,9 +147,9 @@ Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars) {
 
 	//make Grid_Computation_Parameters struct
 	Grid_Computation_Parameters grid_comp_pars;
-
-	Grid_Process::Grid_Algebra_Process grid_alg();
-
+	grid_comp_pars	=	grid_algebra_boundary_calc(pars);
+	grid_comp_pars	=	grid_algebra_calc(grid_comp_pars, max_xi_nodes, max_eta_nodes);
+	grid_pars	=	grid_algebra_real_calc(grid_pars, grid_comp_pars, max_xi_nodes, max_eta_nodes);
 
 	return grid_pars;
 

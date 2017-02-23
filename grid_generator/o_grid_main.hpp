@@ -20,7 +20,7 @@ class O_Grid_Main: private Grid_Process {
 	public:
 		O_Grid_Main(Airfoil_Parameters airfoil_pars, Parameters pars);
 		Grid_Parameters o_grid_boundary(Parameters pars);
-		Grid_Parameters o_grid_internal(Grid_Parameters grid_pars);
+		Grid_Parameters o_grid_internal(Grid_Parameters grid_pars, Parameters pars);
 
 };
 
