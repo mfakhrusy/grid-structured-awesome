@@ -15,6 +15,7 @@ HDRS			= global.hpp				\
 			  grid_generator/o_grid_main.hpp	\
 			  grid_generator/c_grid_main.hpp	\
 			  grid_generator/grid_process.hpp	\
+			  misc/post_process.hpp			\
 
 LIBS			=	
 
@@ -36,6 +37,7 @@ SRCS			= main.cpp					\
 			  grid_generator/o_grid_main.cpp		\
 			  grid_generator/c_grid_main.cpp		\
 			  grid_generator/grid_process.cpp	\
+			  misc/post_process.cpp			\
 
 OBJS			= $(SRCS:.cpp=.o) 	
 

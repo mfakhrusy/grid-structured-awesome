@@ -3,6 +3,7 @@
 #include "pre_process/airfoil.hpp"
 #include "grid_generator/o_grid_main.hpp"
 #include "grid_generator/c_grid_main.hpp"
+#include "misc/post_process.hpp"
 
 int main() {
 
@@ -12,6 +13,7 @@ int main() {
 
 	Initialization init(pars);
 	Airfoil airfoil(airfoil_pars);
+	Post_Process post_process;
 
 	//make local vars of grid
 
@@ -22,6 +24,9 @@ int main() {
 		O_Grid_Main o_grid(airfoil_pars, pars);
 		grid_pars	=	o_grid.o_grid_boundary(pars);
 		grid_pars	=	o_grid.o_grid_internal(grid_pars, pars);
+
+		//print the output
+		post_process.grid_output(grid_pars, pars);
 
 //	for (auto i = 0; i < pars.max_xi_nodes; i++) {
 //		for (auto j = 0; j < pars.max_eta_nodes; j++) {
