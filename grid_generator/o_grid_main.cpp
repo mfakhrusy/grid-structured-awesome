@@ -13,16 +13,13 @@ O_Grid_Main::O_Grid_Main(Airfoil_Parameters airfoil_pars, Parameters pars): Grid
 
 	//main process for o-grid
 	o_grid_initialization();
-//	Grid_Process grids(airfoil_pars, pars);
 	airfoil_pars_new = grid_airfoil_interpolation(xi_nodes, xi_stretch_type);
-
 }
 
 void O_Grid_Main::o_grid_initialization() {
 
 	std::ifstream read_file;
 	read_file.open("input/o_grid_parameters.dat");
-
 	if(read_file.is_open()) {
 		std::string a_line;
 		int count = 0;
@@ -50,7 +47,6 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 	Grid_Parameters grid_pars;
 
 	//make local vars
-	
 	int max_xi_nodes	=	pars.max_xi_nodes;
 	int max_eta_nodes	=	pars.max_eta_nodes;
 	int xi_stretch_type	=	pars.xi_stretch_type;
@@ -67,13 +63,11 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 	std::vector<double> &y_eta_lower_boundary	=	grid_pars.y_eta_lower_boundary;
 
 	//x and y xi inner boundary
-	
 	x_xi_inner_boundary	=	airfoil_pars_new.x;
 	y_xi_inner_boundary	=	airfoil_pars_new.y;
 	
 	//x and y xi outer boundary
 	//assign the vector with number of grids
-	
 	x_xi_outer_boundary.resize(max_xi_nodes);
 	y_xi_outer_boundary.resize(max_xi_nodes);
 
@@ -92,16 +86,15 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 			y_xi_outer_boundary[i]	=	o_grid_center_y + math_f.circle_return_y(x_xi_outer_boundary[i], o_grid_radius, o_grid_center_x, 0);
 
 		} else {
+
 			x_xi_outer_boundary[i]	=	o_grid_center_x - o_grid_radius;
 			y_xi_outer_boundary[i]	=	o_grid_center_y;
+
 		}
 
-//		std::cout << x_xi_outer_boundary[i] << " " << y_xi_outer_boundary[i] << std::endl;
-//		std::cout << x_xi_inner_boundary[i] << " " << y_xi_inner_boundary[i] << std::endl;
 	}
 
 	//x and y eta lower and upper boundary
-
 	x_eta_upper_boundary.resize(max_eta_nodes);
 	y_eta_upper_boundary.resize(max_eta_nodes);
 	x_eta_lower_boundary.resize(max_eta_nodes);
@@ -123,9 +116,6 @@ Grid_Parameters O_Grid_Main::o_grid_boundary(Parameters pars) {
 		//x and y eta lower boundary
 		x_eta_lower_boundary[i]	=	x_eta_min + temp_x*(x_eta_max - x_eta_min);
 		y_eta_lower_boundary[i]	=	o_grid_center_y;
-
-//		std::cout << x_eta_upper_boundary[i] << " " << y_eta_upper_boundary[i] << std::endl;
-//		std::cout << x_eta_lower_boundary[i] << " " << y_eta_lower_boundary[i] << std::endl;
 
 	}
 

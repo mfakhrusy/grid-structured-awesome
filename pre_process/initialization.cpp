@@ -22,11 +22,13 @@ void Initialization::read_input(Parameters &pars) {
 	read_file.open("input/input.dat");
 
 	if(read_file.is_open()) {
+
 		std::string a_line;
 		int count = 0;
 		int number;
 		std::string alt_text;
 		while (read_file >> number >> alt_text) {
+
 			count++;
 			switch(count) {
 				case 1:
@@ -49,6 +51,7 @@ void Initialization::read_input(Parameters &pars) {
 			}
 		
 		}
+
 	} else {
 		std::cout << "it is not opened!\n";
 	}

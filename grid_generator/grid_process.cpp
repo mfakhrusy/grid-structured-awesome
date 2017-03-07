@@ -183,7 +183,7 @@ Grid_Computation_Parameters Grid_Process::grid_algebra_calc(Grid_Computation_Par
 	std::vector<double> xi_upper	=	grid_comp_pars.xi_upper;
 	std::vector<double> eta_left	=	grid_comp_pars.eta_left;
 	std::vector<double> eta_right	=	grid_comp_pars.eta_right;
-	//std::vector<std::vector<double>> grid_correction_factor	=	grid_comp_pars.grid_correction_factor;
+
 	std::vector<std::vector<double>> grid_correction_factor	=	grid_algebra_correction(grid_comp_pars, max_xi_nodes, max_eta_nodes);
 	std::vector<std::vector<double>> &xi			=	grid_comp_pars.xi;
 	std::vector<std::vector<double>> &eta			=	grid_comp_pars.eta;
@@ -224,7 +224,6 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 	std::vector<double> y_eta_lower	=	grid_pars.y_eta_lower_boundary;
 
 	//PRINT TO FILE TEMPORARY
-	
 	std::ofstream file;
 	file.open("output/x_y_boundaries");
 	for (auto i = 0; i < max_xi_nodes; i++) {
@@ -232,7 +231,6 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 		file	<< y_xi_outer[i] << " " << y_xi_inner[i] << " " << y_eta_upper[i] << " " << y_eta_lower[i] << std::endl;
 	}
 	file.close();
-	//==============
 
 	std::vector<std::vector<double>> &x	=	grid_pars.x;
 	std::vector<std::vector<double>> &y	=	grid_pars.y;
@@ -244,7 +242,6 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 		x[i].resize(max_eta_nodes);
 		y[i].resize(max_eta_nodes);
 	}
-
 
 	//calculation for x
 	for (auto i = 0; i < max_xi_nodes; i++) {
@@ -269,9 +266,6 @@ Grid_Parameters Grid_Process::grid_algebra_real_calc(Grid_Parameters grid_pars, 
 			
 			y[i][j]		=	temp_a + temp_b - corr_a - corr_b;
 
-//			if(j==10) {
-//				std::cout << i << " " << j << " " << x[i][j] << " " << y[i][j] << std::endl;
-//			}
 		}
 	}
 

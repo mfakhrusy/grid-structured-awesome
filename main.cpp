@@ -27,16 +27,9 @@ int main() {
 
 		//print the output
 		post_process.grid_output(grid_pars, pars);
-
-//	for (auto i = 0; i < pars.max_xi_nodes; i++) {
-//		for (auto j = 0; j < pars.max_eta_nodes; j++) {
-//			std::cout << i << " " << j << " "<< grid_pars.x[i][j] << " " << grid_pars.y[i][j] << std::endl;
-//		}
-//	}
-
-
 	
 	} else if (pars.grid_type == 1) {
+		//this is meant to be using the C grid type airfoil.
 	
 	} else {
 		std::cout << "grid type is wrong, please change grid type and run again.";

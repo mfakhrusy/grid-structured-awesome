@@ -14,14 +14,18 @@ void Post_Process::grid_output(Grid_Parameters grid_pars, Parameters pars) {
 	double z_value	=	0;
 	std::ofstream output_file ("output/grid_output.csv");
 	if (output_file.is_open()) {
+
 		output_file << "x_coord,y_coord,z_coord" << std::endl;
 		for (auto i = 0; i < max_xi_nodes; i++) {
 			for (auto j = 0; j < max_eta_nodes; j++) {
+
 				output_file << x[i][j] << ",";
 				output_file << y[i][j] << ",";
 				output_file << z_value << std::endl;
+
 			}
 		}
+
 	} else {
 		std::cout << "output file cannot be made thank you\n";
 	}	
