@@ -16,6 +16,7 @@ class O_Grid_Main: private Grid_Process {
 
 	//methods
 	void o_grid_initialization();
+	Grid_Parameters o_grid_normalization(Grid_Parameters grid_pars, Parameters pars);
 
 	public:
 		O_Grid_Main(Airfoil_Parameters airfoil_pars, Parameters pars);

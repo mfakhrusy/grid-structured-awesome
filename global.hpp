@@ -37,6 +37,10 @@ struct Grid_Parameters {
 
 	std::vector<std::vector<double>> x;
 	std::vector<std::vector<double>> y;
+
+	//mesh quality parameters
+	std::vector<std::vector<double>> cell_aspect_ratio;
+	std::vector<std::vector<double>> cell_skewness;
 	
 };
 
@@ -46,7 +50,6 @@ struct Grid_Computation_Parameters {
 	std::vector<double> xi_lower;
 	std::vector<double> eta_left;
 	std::vector<double> eta_right;
-
 
 	std::vector<std::vector<double>> grid_correction_factor;
 	std::vector<std::vector<double>> xi;	//x computational domain

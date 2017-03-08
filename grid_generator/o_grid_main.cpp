@@ -135,6 +135,28 @@ Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars, Paramete
 	grid_comp_pars	=	grid_algebra_boundary_calc(pars);
 	grid_comp_pars	=	grid_algebra_calc(grid_comp_pars, max_xi_nodes, max_eta_nodes);
 	grid_pars	=	grid_algebra_real_calc(grid_pars, grid_comp_pars, max_xi_nodes, max_eta_nodes);
+	grid_pars	=	o_grid_normalization(grid_pars, pars);
+
 	return grid_pars;
 
+}
+
+//normalization function
+Grid_Parameters O_Grid_Main::o_grid_normalization(Grid_Parameters grid_pars, Parameters pars) {
+	
+	//make local vars
+	std::vector<std::vector<double>> &x	=	grid_pars.x;
+	std::vector<std::vector<double>> &y	=	grid_pars.y;
+	int max_xi_nodes	=	pars.max_xi_nodes;
+	int max_eta_nodes	=	pars.max_eta_nodes;
+
+	//normalization with o_grid_radius
+	for (auto i = 0; i < max_xi_nodes; i++) {
+		for (auto j = 0; j < max_eta_nodes; j++) {
+			x[i][j]	=	(x[i][j] - o_grid_center_x)/o_grid_radius;
+			y[i][j]	=	(y[i][j] - o_grid_center_y)/o_grid_radius;
+		}
+	}
+
+	return grid_pars;
 }
