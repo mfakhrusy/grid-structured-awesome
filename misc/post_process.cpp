@@ -37,15 +37,17 @@ void Post_Process::grid_output(Grid_Parameters grid_pars, Parameters pars) {
 	//local vars
 	std::vector<std::vector<double>> cell_AR	=	grid_pars.cell_aspect_ratio;
 	std::vector<std::vector<double>> cell_area	=	grid_pars.cell_area;
+	std::vector<std::vector<double>> cell_skewness	=	grid_pars.cell_skewness;
 	output_file.open("output/mesh_quality.csv");
 	if (output_file.is_open()) {
 		
-		output_file << "AR,area" << std::endl;
+		output_file << "AR,area,skewness" << std::endl;
 		for (auto i = 0; i < max_xi_nodes - 1; i++) {
 			for (auto j = 0; j < max_eta_nodes - 1; j++) {
 				
 				output_file << cell_AR[i][j] << ",";
-				output_file << cell_area[i][j] << std::endl;
+				output_file << cell_area[i][j] << ",";
+				output_file << cell_skewness[i][j] << std::endl;
 			}
 		}
 	}
@@ -188,11 +190,19 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			temp_angle[1]	=	std::asin(temp_cross_mag[1]/(s_eta_1*s_xi_0))*(180/M_PI);
 			temp_angle[2]	=	std::asin(temp_cross_mag[2]/(s_xi_1*s_eta_1))*(180/M_PI);
 			temp_angle[3]	=	std::asin(temp_cross_mag[3]/(s_eta_0*s_xi_1))*(180/M_PI);
+			double temp_angle_total = 0;
+			for (auto& n: temp_angle) {
+				temp_angle_total += n;
+			}
+			std::cout << i << " " << j << " " << temp_cross_mag[0] << " " << temp_cross_mag[1] << " " << temp_cross_mag[2] << " " << temp_cross_mag[3] << " " << temp_angle_total << std::endl;
 
 			//calculate the skewness of each angle
 			for (auto i = 0; i < temp_skewness.size(); i++) {
 				temp_skewness[i]	=	(std::abs(std::abs(temp_angle[i]) - 90))/90;
 			}
+			
+			//check the maximum element and add that to the cell_skewness
+			cell_skewness[i][j]	=	*std::max_element(temp_skewness.begin(), temp_skewness.end());
 
 
 		}
