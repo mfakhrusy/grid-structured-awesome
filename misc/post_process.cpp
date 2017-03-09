@@ -152,7 +152,7 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 		for (auto j = 0; j < max_eta_nodes-1; j++) {
 		
 			//define 2 local vectors
-			std::vector<double> temp_cross_mag(4);
+			std::vector<double> temp_dot_mag(4);
 			std::vector<double> temp_angle(4);
 			std::vector<double> temp_skewness(4);
 			//perform more correct area calculation, with cross product method
@@ -173,28 +173,28 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			double s_xi_1		=	sqrt(pow(delta_x_xi_1,2) + pow(delta_y_xi_1,2));
 			double s_eta_1		=	sqrt(pow(delta_x_eta_1,2) + pow(delta_y_eta_1,2));
 
-			//after that, do cross product for the first triangle	-> ONLY FOR 2D
-			//cell skewness calculation will be performed by using cross product approach
-			//first one need to calculate cross product of each two respective sides
+			//cell skewness calculation will be performed by using dot product approach
+			//first one need to calculate dot product of each two respective sides
 			//4 angles, 0 is from the angle from bottom nodes (node-wise), and increase in a clockwise manner
-			//the cross product should be into negative k (negative z result)
-			//0 and 2 -> xi cross eta
-			//1 and 3 -> eta cross xi
-			temp_cross_mag[0]	=	std::abs((delta_x_xi_0*delta_y_eta_0) - (delta_y_xi_0*delta_x_eta_0));
-			temp_cross_mag[1]	=	std::abs((delta_x_eta_1*delta_y_xi_0) - (delta_y_eta_1*delta_x_xi_0));
-			temp_cross_mag[2]	=	std::abs((delta_x_xi_1*delta_y_eta_1) - (delta_y_xi_1*delta_x_eta_1));
-			temp_cross_mag[3]	=	std::abs((delta_x_eta_0*delta_y_xi_1) - (delta_y_eta_0*delta_x_xi_1));
+			//the dot product should be into negative k (negative z result)
 
-			//calculate the angle in radians
-			temp_angle[0]	=	std::asin(temp_cross_mag[0]/(s_xi_0*s_eta_0))*(180/M_PI);
-			temp_angle[1]	=	std::asin(temp_cross_mag[1]/(s_eta_1*s_xi_0))*(180/M_PI);
-			temp_angle[2]	=	std::asin(temp_cross_mag[2]/(s_xi_1*s_eta_1))*(180/M_PI);
-			temp_angle[3]	=	std::asin(temp_cross_mag[3]/(s_eta_0*s_xi_1))*(180/M_PI);
+			temp_dot_mag[0]	=	std::abs((delta_x_xi_0*delta_x_eta_0) + (delta_y_xi_0*delta_y_eta_0));
+			temp_dot_mag[1]	=	std::abs((delta_x_eta_1*delta_x_xi_0) + (delta_y_eta_1*delta_y_xi_0));
+			temp_dot_mag[2]	=	std::abs((delta_x_xi_1*delta_x_eta_1) + (delta_y_xi_1*delta_y_eta_1));
+			temp_dot_mag[3]	=	std::abs((delta_x_eta_0*delta_x_xi_1) + (delta_y_eta_0*delta_y_xi_1));
+
+			//calculate the angle in degrees
+			temp_angle[0]	=	std::acos(temp_dot_mag[0]/(s_xi_0*s_eta_0))*(180/M_PI);
+			temp_angle[1]	=	90 + std::acos(temp_dot_mag[1]/(s_eta_1*s_xi_0))*(180/M_PI);
+			temp_angle[2]	=	std::acos(temp_dot_mag[2]/(s_xi_1*s_eta_1))*(180/M_PI);
+			temp_angle[3]	=	90 + std::acos(temp_dot_mag[3]/(s_eta_0*s_xi_1))*(180/M_PI);
+
 			double temp_angle_total = 0;
 			for (auto& n: temp_angle) {
 				temp_angle_total += n;
 			}
-			std::cout << i << " " << j << " " << temp_cross_mag[0] << " " << temp_cross_mag[1] << " " << temp_cross_mag[2] << " " << temp_cross_mag[3] << " " << temp_angle_total << std::endl;
+
+			//std::cout << i << " " << j << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;
 
 			//calculate the skewness of each angle
 			for (auto i = 0; i < temp_skewness.size(); i++) {
@@ -203,7 +203,6 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			
 			//check the maximum element and add that to the cell_skewness
 			cell_skewness[i][j]	=	*std::max_element(temp_skewness.begin(), temp_skewness.end());
-
 
 		}
 	}
