@@ -26,8 +26,8 @@ int main() {
 		grid_pars	=	o_grid.o_grid_internal(grid_pars, pars);
 
 		//post_process
-		//post_process.aspect_ratio_computation(grid_pars, pars);
-		grid_pars	=	post_process.aspect_ratio_computation(grid_pars, pars);
+		grid_pars	=	post_process.cell_aspect_ratio_computation(grid_pars, pars);
+		grid_pars	=	post_process.cell_area_computation(grid_pars, pars);
 		//print the output
 		post_process.grid_output(grid_pars, pars);
 	

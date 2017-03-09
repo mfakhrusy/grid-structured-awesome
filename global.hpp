@@ -41,6 +41,7 @@ struct Grid_Parameters {
 	//mesh quality parameters
 	std::vector<std::vector<double>> cell_aspect_ratio;
 	std::vector<std::vector<double>> cell_skewness;
+	std::vector<std::vector<double>> cell_area;
 	
 };
 
