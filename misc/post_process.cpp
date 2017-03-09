@@ -45,6 +45,7 @@ void Post_Process::grid_output(Grid_Parameters grid_pars, Parameters pars) {
 			}
 		}
 	}
+	output_file.close();
 
 }
 
