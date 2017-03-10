@@ -178,23 +178,63 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			//4 angles, 0 is from the angle from bottom nodes (node-wise), and increase in a clockwise manner
 			//the dot product should be into negative k (negative z result)
 
-			temp_dot_mag[0]	=	std::abs((delta_x_xi_0*delta_x_eta_0) + (delta_y_xi_0*delta_y_eta_0));
-			temp_dot_mag[1]	=	std::abs((delta_x_eta_1*delta_x_xi_0) + (delta_y_eta_1*delta_y_xi_0));
-			temp_dot_mag[2]	=	std::abs((delta_x_xi_1*delta_x_eta_1) + (delta_y_xi_1*delta_y_eta_1));
-			temp_dot_mag[3]	=	std::abs((delta_x_eta_0*delta_x_xi_1) + (delta_y_eta_0*delta_y_xi_1));
+//			temp_dot_mag[0]	=	((delta_x_xi_0*delta_x_eta_0) + (delta_y_xi_0*delta_y_eta_0));
+//			temp_dot_mag[1]	=	((delta_x_eta_1*delta_x_xi_0) + (delta_y_eta_1*delta_y_xi_0));
+//			temp_dot_mag[2]	=	((delta_x_xi_1*delta_x_eta_1) + (delta_y_xi_1*delta_y_eta_1));
+//			temp_dot_mag[3]	=	((delta_x_eta_0*delta_x_xi_1) + (delta_y_eta_0*delta_y_xi_1));
 
 			//calculate the angle in degrees
-			temp_angle[0]	=	std::acos(temp_dot_mag[0]/(s_xi_0*s_eta_0))*(180/M_PI);
-			temp_angle[1]	=	90 + std::acos(temp_dot_mag[1]/(s_eta_1*s_xi_0))*(180/M_PI);
-			temp_angle[2]	=	std::acos(temp_dot_mag[2]/(s_xi_1*s_eta_1))*(180/M_PI);
-			temp_angle[3]	=	90 + std::acos(temp_dot_mag[3]/(s_eta_0*s_xi_1))*(180/M_PI);
+			for (auto k = 0; k < 4; k++) {
+				double temp_dot;
+				double temp_temp;
+				switch(k) {
+					case 0:
+						temp_dot		=	((delta_x_xi_0*delta_x_eta_0) + (delta_y_xi_0*delta_y_eta_0));
+						temp_temp	=	s_xi_0*s_eta_0;
+						break;
+					case 1:
+						temp_dot		=	((delta_x_eta_1*delta_x_xi_0) + (delta_y_eta_1*delta_y_xi_0));
+						temp_temp	=	s_eta_1*s_xi_0;
+						break;
+					case 2:
+						temp_dot		=	((delta_x_xi_1*delta_x_eta_1) + (delta_y_xi_1*delta_y_eta_1));
+						temp_temp	=	s_xi_1*s_eta_1;
+						break;
+					case 3:
+						temp_dot		=	((delta_x_eta_0*delta_x_xi_1) + (delta_y_eta_0*delta_y_xi_1));
+						temp_temp	=	s_eta_0*s_xi_1;
+						break;
+				}
+
+				temp_dot_mag[k]	=	temp_dot;
+
+				if (temp_dot_mag[k] < 0) {
+					temp_angle[k]	=	90 + std::acos(std::abs(temp_dot_mag[k])/(temp_temp))*(180/M_PI);
+//					std::cout << i << " " << j << " " << k << " " << temp_dot_mag[k] << " " << temp_angle[k] << std::endl;
+				} else if (temp_dot_mag[k] == 0) {
+					temp_angle[k]	=	90;
+				} else {
+					temp_angle[k]	=	std::acos(temp_dot_mag[k]/(temp_temp))*(180/M_PI);
+				}
+//				if (k == 2) {
+//					std::cout << i << " " << j << " " << k << " " << temp_dot_mag[k] << " " << temp_angle[k] << std::endl;
+//				}
+			}
+//			temp_angle[0]	=	std::acos(temp_dot_mag[0]/(s_xi_0*s_eta_0))*(180/M_PI);
+//			temp_angle[1]	=	std::acos(temp_dot_mag[1]/(s_eta_1*s_xi_0))*(180/M_PI);
+//			temp_angle[2]	=	std::acos(temp_dot_mag[2]/(s_xi_1*s_eta_1))*(180/M_PI);
+//			temp_angle[3]	=	std::acos(temp_dot_mag[3]/(s_eta_0*s_xi_1))*(180/M_PI);
 
 			double temp_angle_total = 0;
 			for (auto& n: temp_angle) {
 				temp_angle_total += n;
 			}
 
-			//std::cout << i << " " << j << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;
+//			std::cout << i << " " << j << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;
+			if (j > 8 && j < 13 && i < 2) {
+				//std::cout << i << " " << j << " " << delta_x_xi_0 << " " << delta_y_xi_0 << " " << delta_x_xi_1 << " " << delta_y_xi_1 << " " << delta_x_eta_0 << " " << delta_y_eta_0 << " " << delta_x_eta_1 << " " << delta_y_eta_1 << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;	
+				std::cout << i << " " << j << " " << x[i][j] << " " << y[i][j] << " " << x[i+1][j] << " " << y[i+1][j] << " " << x[i+1][j+1] << " " << y[i+1][j+1] << " " << x[i][j+1] << " " << y[i][j+1] << " " << temp_angle[2] << " " << temp_angle[3] << std::endl;
+			} 
 
 			//calculate the skewness of each angle
 			for (auto i = 0; i < temp_skewness.size(); i++) {
