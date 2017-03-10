@@ -116,10 +116,10 @@ Grid_Parameters Post_Process::cell_area_computation(Grid_Parameters grid_pars, P
 			double delta_x_eta_0	=	x[i][j+1] - x[i][j];
 			double delta_y_eta_0	=	y[i][j+1] - y[i][j];
 
-			double delta_x_xi_1	=	x[i+1][j+1] - x[i+1][j];
-			double delta_y_xi_1	=	y[i+1][j+1] - y[i+1][j];
-			double delta_x_eta_1	=	x[i+1][j+1] - x[i][j+1];
-			double delta_y_eta_1	=	y[i+1][j+1] - y[i][j+1];
+			double delta_x_eta_1	=	x[i+1][j+1] - x[i+1][j];
+			double delta_y_eta_1	=	y[i+1][j+1] - y[i+1][j];
+			double delta_x_xi_1	=	x[i+1][j+1] - x[i][j+1];
+			double delta_y_xi_1	=	y[i+1][j+1] - y[i][j+1];
 
 			//after that, do cross product for the first triangle	-> ONLY FOR 2D
 			double temp_area_lower	=	0.5*std::abs((delta_x_xi_0*delta_y_eta_0) - (delta_y_xi_0*delta_x_eta_0));
@@ -157,15 +157,16 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			std::vector<double> temp_skewness(4);
 			//perform more correct area calculation, with cross product method
 			//first calculate each vector member
+
 			double delta_x_xi_0	=	x[i+1][j] - x[i][j];
 			double delta_y_xi_0	=	y[i+1][j] - y[i][j];
 			double delta_x_eta_0	=	x[i][j+1] - x[i][j];
 			double delta_y_eta_0	=	y[i][j+1] - y[i][j];
 
-			double delta_x_xi_1	=	x[i+1][j+1] - x[i+1][j];
-			double delta_y_xi_1	=	y[i+1][j+1] - y[i+1][j];
-			double delta_x_eta_1	=	x[i+1][j+1] - x[i][j+1];
-			double delta_y_eta_1	=	y[i+1][j+1] - y[i][j+1];
+			double delta_x_xi_1	=	x[i+1][j+1] - x[i][j+1];
+			double delta_y_xi_1	=	y[i+1][j+1] - y[i][j+1];
+			double delta_x_eta_1	=	-x[i+1][j+1] + x[i+1][j];
+			double delta_y_eta_1	=	-y[i+1][j+1] + y[i+1][j];
 
 			//calculate length of each side
 			double s_xi_0		=	sqrt(pow(delta_x_xi_0,2) + pow(delta_y_xi_0,2));
@@ -209,7 +210,7 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 				temp_dot_mag[k]	=	temp_dot;
 
 				if (temp_dot_mag[k] < 0) {
-					temp_angle[k]	=	90 + std::acos(std::abs(temp_dot_mag[k])/(temp_temp))*(180/M_PI);
+					temp_angle[k]	=	/*180 - */std::acos(std::abs(temp_dot_mag[k])/(temp_temp))*(180/M_PI);
 //					std::cout << i << " " << j << " " << k << " " << temp_dot_mag[k] << " " << temp_angle[k] << std::endl;
 				} else if (temp_dot_mag[k] == 0) {
 					temp_angle[k]	=	90;
@@ -232,8 +233,9 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 
 //			std::cout << i << " " << j << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;
 			if (j > 8 && j < 13 && i < 2) {
-				//std::cout << i << " " << j << " " << delta_x_xi_0 << " " << delta_y_xi_0 << " " << delta_x_xi_1 << " " << delta_y_xi_1 << " " << delta_x_eta_0 << " " << delta_y_eta_0 << " " << delta_x_eta_1 << " " << delta_y_eta_1 << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;	
-				std::cout << i << " " << j << " " << x[i][j] << " " << y[i][j] << " " << x[i+1][j] << " " << y[i+1][j] << " " << x[i+1][j+1] << " " << y[i+1][j+1] << " " << x[i][j+1] << " " << y[i][j+1] << " " << temp_angle[2] << " " << temp_angle[3] << std::endl;
+//				std::cout << i << " " << j << " " << delta_x_xi_0 << " " << delta_y_xi_0 << " " << delta_x_xi_1 << " " << delta_y_xi_1 << " " << delta_x_eta_0 << " " << delta_y_eta_0 << " " << delta_x_eta_1 << " " << delta_y_eta_1 << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << " " << temp_angle_total << std::endl;	
+				std::cout << i << " " << j << " " << delta_x_xi_0 << " " << delta_y_xi_0 << " " << delta_x_xi_1 << " " << delta_y_xi_1 << " " << delta_x_eta_0 << " " << delta_y_eta_0 << " " << delta_x_eta_1 << " " << delta_y_eta_1 << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle_total << " " << temp_dot_mag[1] << " " << temp_dot_mag[2] << std::endl;	
+//				std::cout << i << " " << j << " " << x[i][j] << " " << y[i][j] << " " << x[i+1][j] << " " << y[i+1][j] << " " << x[i+1][j+1] << " " << y[i+1][j+1] << " " << x[i][j+1] << " " << y[i][j+1] << " " << temp_angle[0] << " " << temp_angle[1] << " " << temp_angle[2] << " " << temp_angle[3] << std::endl;
 			} 
 
 			//calculate the skewness of each angle
@@ -251,5 +253,4 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 	grid_pars.cell_skewness	=	cell_skewness;
 
 	return grid_pars;
-
 }
