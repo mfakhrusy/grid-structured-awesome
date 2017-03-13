@@ -138,7 +138,6 @@ Grid_Parameters O_Grid_Main::o_grid_internal(Grid_Parameters grid_pars, Paramete
 	grid_pars	=	o_grid_normalization(grid_pars, pars);
 
 	return grid_pars;
-
 }
 
 //normalization function

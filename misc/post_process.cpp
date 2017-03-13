@@ -40,19 +40,18 @@ void Post_Process::grid_output(Grid_Parameters grid_pars, Parameters pars) {
 	std::vector<std::vector<double>> cell_skewness	=	grid_pars.cell_skewness;
 	output_file.open("output/mesh_quality.csv");
 	if (output_file.is_open()) {
-		
-		output_file << "AR,area,skewness" << std::endl;
+	
+		output_file << "i,j,AR,area" << std::endl;
 		for (auto i = 0; i < max_xi_nodes - 1; i++) {
 			for (auto j = 0; j < max_eta_nodes - 1; j++) {
 				
+				output_file << i << ",";
+				output_file << j << ",";
 				output_file << cell_AR[i][j] << ",";
-				output_file << cell_area[i][j] << ",";
-				output_file << cell_skewness[i][j] << std::endl;
+				output_file << cell_area[i][j] << std::endl;
 			}
 		}
 	}
-	output_file.close();
-
 }
 
 Grid_Parameters Post_Process::cell_aspect_ratio_computation(Grid_Parameters grid_pars, Parameters pars) {
@@ -135,7 +134,7 @@ Grid_Parameters Post_Process::cell_area_computation(Grid_Parameters grid_pars, P
 	return grid_pars;
 }
 
-//calculate cell skewness
+//calculate cell skewness -> not used, still wrong
 Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_pars, Parameters pars) {
 
 	//make local vars
@@ -163,8 +162,8 @@ Grid_Parameters Post_Process::cell_skewness_computation(Grid_Parameters grid_par
 			double delta_x_eta_0	=	x[i][j+1] - x[i][j];
 			double delta_y_eta_0	=	y[i][j+1] - y[i][j];
 
-			double delta_x_xi_1	=	x[i+1][j+1] - x[i][j+1];
-			double delta_y_xi_1	=	y[i+1][j+1] - y[i][j+1];
+			double delta_x_xi_1	=	-x[i+1][j+1] + x[i][j+1];
+			double delta_y_xi_1	=	-y[i+1][j+1] + y[i][j+1];
 			double delta_x_eta_1	=	-x[i+1][j+1] + x[i+1][j];
 			double delta_y_eta_1	=	-y[i+1][j+1] + y[i+1][j];
 
